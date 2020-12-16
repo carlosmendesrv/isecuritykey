@@ -1,0 +1,52 @@
+version: '3'
+services:
+    app:
+        build: .
+        container_name: isecurity-app
+        entrypoint: dockerize -template ./.docker/app/.env:.env -template ./.docker/app/.env.testing:.env.testing php-fpm
+        environment:
+            - _DB_HOST=db
+            - _DB_DATABASE=isecurity
+            - _DB_USERNAME=root
+            - _DB_PASSWORD=root
+            - _TEST_DB_DATABASE=isecurity_test
+        volumes:
+            - .:/var/www:delegated
+        networks:
+            - app-network
+        depends_on:
+            - db
+    nginx:
+        build: .docker/nginx
+        container_name: isecurity-nginx
+        restart: always
+        tty: true
+        ports:
+            - "8090:80"
+        volumes:
+            - .:/var/www:delegated
+        networks:
+            - app-network
+        depends_on:
+            - app
+    db:
+        build: ./.docker/mysql
+        command: --innodb-use-native-aio=0
+        container_name: isecurity-db
+        restart: always
+        tty: true
+        ports:
+            - "3306:3306"
+        volumes:
+            - ./.docker/dbdata:/var/lib/mysql
+            - ./.docker/mysql:/docker-entrypoint-initdb.d
+        environment:
+            - MYSQL_DATABASE=isecurity
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_USER=root
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        driver: bridge
