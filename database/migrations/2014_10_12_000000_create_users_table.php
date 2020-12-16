@@ -15,8 +15,6 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('instance_id')->nullable();
-            $table->foreign('instance_id')->references('id')->on('instances');
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
@@ -26,6 +24,10 @@ class CreateUsersTable extends Migration
             $table->string('2fa_secret')->nullable();
             $table->rememberToken();
             $table->softDeletes();
+
+            $table->uuid('instance_id')->nullable();
+            $table->foreign('instance_id')->references('id')->on('instances');
+
             $table->timestamps();
         });
     }

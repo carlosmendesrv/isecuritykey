@@ -15,7 +15,6 @@ class CreateKeysTable extends Migration
     {
         Schema::create('keys', function (Blueprint $table) {
             $table->uuid('id');
-            $table->uuid('category_id');
             $table->string('title');
             $table->string('username');
             $table->string('password');
@@ -24,6 +23,9 @@ class CreateKeysTable extends Migration
             $table->string('notes')->nullable();
             $table->date('expires')->nullable();
             $table->boolean('is_private')->default(false);
+
+            $table->uuid('category_id');
+            $table->foreign('category_id')->references('id')->on('categories');
 
             $table->softDeletes();
             $table->timestamps();

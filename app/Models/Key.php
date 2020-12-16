@@ -42,4 +42,5 @@ class Key extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
 }
