@@ -49,4 +49,14 @@ class GroupRepository
 
         return $group;
     }
+
+
+    public function listKeys()
+    {
+        return $this->group
+            ->where('instance_id', instanceId())
+            ->orderBy('created_at','DESC')
+            ->paginate(10);
+    }
+
 }

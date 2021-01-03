@@ -2,6 +2,7 @@
 
 
 namespace App\Repositories;
+
 use App\Models\User;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -31,11 +32,11 @@ class RoleRepository
     public function getAll()
     {
         $roles = $this->role
-            ->where('name' , 'owner')
+            ->where('name', 'owner')
             ->orWhere('name', 'LIKE', "%{$this->instanceName()}%")
             ->get();
         $response = [];
-        foreach($roles as $role){
+        foreach ($roles as $role) {
             $response[] = [
                 'role' => $role,
                 self::PERMISSIONS => $role->permissions
@@ -46,14 +47,17 @@ class RoleRepository
 
     public function store($data)
     {
-        return $this->role->create(['name' => $this->instanceName(). '_'.$data['name'], 'guard_name' => 'web', 'instance_id' => instanceId()]);
+        return $this->role->create([
+            'name' => $data['name'],
+            'instance_id' => instanceId()
+        ]);
     }
 
     public function assignPermission($data)
     {
         $roleModel = $this->role->findOrFail($data['role_id']);
         $permissions = json_decode($data[self::PERMISSIONS]);
-        foreach ($permissions as $id){
+        foreach ($permissions as $id) {
             $permissionModel = $this->permission->findOrFail($id);
             $roleModel->givePermissionTo($permissionModel->name);
         }
@@ -64,7 +68,7 @@ class RoleRepository
     {
         $roleModel = $this->role->findOrFail($data['role_id']);
         $permissions = json_decode($data[self::PERMISSIONS]);
-        foreach ($permissions as $id){
+        foreach ($permissions as $id) {
             $permissionModel = $this->permission->findOrFail($id);
             $roleModel->revokePermissionTo($permissionModel->name);
         }
@@ -75,7 +79,7 @@ class RoleRepository
     public function destroy($id)
     {
         $roleModel = $this->role->findOrFail($id);
-        if(!is_null($roleModel->users()->first())){
+        if (!is_null($roleModel->users()->first())) {
             return response()->json('This role is not empty. Please remove from this role users first.', 422);
         }
         $this->revokeAllPermissions($roleModel);
@@ -86,7 +90,7 @@ class RoleRepository
     public function revokeAllPermissions($role)
     {
         $permissions = $this->permission->all();
-        foreach($permissions as $permission){
+        foreach ($permissions as $permission) {
             $role->revokePermissionTo($permission->name);
         }
         return true;

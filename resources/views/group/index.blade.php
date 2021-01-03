@@ -30,12 +30,12 @@
                                 <td>{{$group->notes}}</td>
                                 <td>
                                     <div class="btn-group">
-                                    <a href="{{route('group.key.index',$group->id)}}"
+                                    <a href="{{route('group.key.index',$group)}}"
                                        class="btn btn-info">
                                         Senhas
                                     </a>
                                     <form method="POST"
-                                          action="{{ route('group.destroy', $group->id) }}">
+                                          action="{{ route('group.destroy', $group) }}">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">Excluir</button>

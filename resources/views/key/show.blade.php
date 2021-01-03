@@ -34,7 +34,7 @@
 
                                     <tr>
                                         <th scope="row">Senha</th>
-                                        <td><input class="form-control" type="password" value="{{$key->password}}"> </td>
+                                        <td>{{$key->password}}</td>
                                     </tr>
 
                                     <tr>

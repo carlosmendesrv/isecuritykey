@@ -27,8 +27,11 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => ['auth']], function() {
 
-    Route::resource('role', 'RoleController');
-    Route::resource('user', 'UserController');
+    Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function (){
+        Route::resource('role', 'RoleController');
+        Route::resource('user', 'UserController');
+    });
+
     Route::resource('google2Fa', '2faController')->only('show', 'destroy');
     Route::resource('group', 'GroupController');
     Route::resource('group.key', 'KeyController');

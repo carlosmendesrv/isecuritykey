@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Admin\Controllers;
 
-use App\Instance;
+use App\Http\Controllers\Controller;
+use App\Models\Instance;
 use Illuminate\Http\Request;
 
 class InstanceController extends Controller

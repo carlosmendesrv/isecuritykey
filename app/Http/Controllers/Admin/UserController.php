@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\Account;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Spatie\Activitylog\Models\Activity;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -25,9 +27,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        Log::info('Listing all user - Instance 123: '. InstanceId());
         $users = $this->repository->index();
-        return view('user.index', compact('users'));
+        return view('admin.user.index', compact('users'));
     }
 
     /**
@@ -38,7 +39,7 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::pluck('name','name')->all();
-        return view('user.create', compact('roles'));
+        return view('admin.user.create', compact('roles'));
     }
 
     /**
@@ -50,7 +51,7 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         $this->repository->store($request->all());
-        return redirect()->route('user.index');
+        return redirect()->route('admin.user.index');
     }
 
     /**
@@ -96,6 +97,6 @@ class UserController extends Controller
     public function destroy($id)
     {
         $this->repository->destroy($id);
-        return redirect()->route('user.index')->with('success', 'Usuário deletado.');
+        return redirect()->route('admin.user.index')->with('success', 'Usuário deletado.');
     }
 }

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Repositories\RoleRepository;
 use App\Validator\RoleValidator;
 use Illuminate\Http\Request;
@@ -13,6 +14,7 @@ class RoleController extends Controller
 {
     protected $validator;
     protected $repository;
+    private $rules;
 
     /**
      * Display a listing of the resource.
@@ -28,6 +30,9 @@ class RoleController extends Controller
 
         $this->validator = $validator;
         $this->repository = $repository;
+        $this->rules = [
+            'name' => 'required|max:255'
+        ];
     }
 
     /**
@@ -41,7 +46,7 @@ class RoleController extends Controller
             ->where('instance_id', InstanceId())
             ->paginate(5);
 
-        return view('role.index', compact('roles'))
+        return view('admin.role.index', compact('roles'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
 
@@ -53,7 +58,7 @@ class RoleController extends Controller
     public function create()
     {
         $permission = Permission::orderBy('model')->get();
-        return view('role.create', compact('permission'));
+        return view('admin.role.create', compact('permission'));
     }
 
     /**
@@ -64,24 +69,20 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+        $a = $this->validate($request,$this->rules );
+        dd($a);
 //        $this->validate($request, [
 //            'name' => 'required|unique:roles,name,instance_id',
 //            'permission' => 'required',
 //        ]);
-
         try {
+
+//            $this->repository->store($request->all());
             $this->validator->createRole($request->all())
                 ? $this->repository->store($request->all()) : '';
         } catch (\Exception $exception) {
 
-//
-//        if ($validator) {
-//            $role = Role::create([
-//                'name' => $request->input('name'),
-//                'instance_id' => instanceId()
-//            ]);
-//            $role->syncPermissions($request->input('permission'));
-
+//            dd($exception->getMessage());
 
         }
         return redirect()->route('role.index')
@@ -102,7 +103,7 @@ class RoleController extends Controller
             ->where("role_has_permissions.role_id", $id)
             ->get();
 
-        return view('role.show', compact('role', 'rolePermissions'));
+        return view('admin.role.show', compact('role', 'rolePermissions'));
     }
 
     /**
@@ -119,7 +120,7 @@ class RoleController extends Controller
             ->pluck('role_has_permissions.permission_id', 'role_has_permissions.permission_id')
             ->all();
 
-        return view('role.edit', compact('role', 'permission', 'rolePermissions'));
+        return view('admin.role.edit', compact('role', 'permission', 'rolePermissions'));
     }
 
     /**
@@ -142,7 +143,7 @@ class RoleController extends Controller
 
         $role->syncPermissions($request->input('permission'));
 
-        return redirect()->route('role.index')
+        return redirect()->route('admin.role.index')
             ->with('success', 'Grupo de permissão atualizado.');
     }
 
@@ -155,7 +156,7 @@ class RoleController extends Controller
     public function destroy($id)
     {
         DB::table("roles")->where('id', $id)->delete();
-        return redirect()->route('role.index')
+        return redirect()->route('admin.role.index')
             ->with('success', 'Grupo de permissão deletado.');
     }
 }

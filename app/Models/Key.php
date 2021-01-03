@@ -26,11 +26,14 @@ class Key extends Model
         'notes',
         'expires',
         'is_private',
-        'category_id'
+        'category_id',
+        'group_id'
     ];
 
     protected $casts = [
-        'id' => 'string'
+        'id' => 'string',
+        'category_id' => 'string',
+        'group_id' => 'string',
     ];
 
     public function group()

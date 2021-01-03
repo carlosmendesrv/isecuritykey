@@ -18,16 +18,18 @@
                         <table class="table table-hover">
                             <thead>
                             <tr>
-                                <th scope="col">Titulo</th>
+                                <th scope="col">Descrição</th>
+                                <th scope="col">Categoria</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Data</th>
                                 <th scope="col">Ação</th>
                             </tr>
                             </thead>
-                            <tbody>
                             @foreach(@$keys as $key)
+                            <tbody>
                             <tr>
                                 <td>{{$key->title}}</td>
+                                <td>{{$key->category->name}}</td>
                                 <td>{{ $key->is_private ? 'Privada':'Publica' }}</td>
                                 <td>{{ date_format( $key->created_at, 'd/m/Y') }}</td>
                                 <td>
@@ -45,8 +47,8 @@
                                     </div>
                                 </td>
                             </tr>
-                            @endforeach
                             </tbody>
+                            @endforeach
                         </table>
                     </div>
                 </div>

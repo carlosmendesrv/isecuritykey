@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\KeyRequest;
+use App\Models\Category;
 use App\Models\Group;
 use App\Models\Key;
 use App\Repositories\CategoryRepository;
+use App\Repositories\GroupRepository;
 use App\Repositories\KeyRepository;
 use Illuminate\Http\Request;
 
@@ -14,11 +16,13 @@ class KeyController extends Controller
 
     protected $repository;
     protected $category;
+    protected $group;
 
-    public function __construct(KeyRepository $repository, CategoryRepository $category)
+    public function __construct(KeyRepository $repository, CategoryRepository $category, GroupRepository $group)
     {
         $this->repository = $repository;
         $this->category = $category;
+        $this->group = $group;
     }
 
 
@@ -30,7 +34,7 @@ class KeyController extends Controller
     public function index(Request $request)
     {
         $group = $request->group;
-        $keys = $this->repository->index();
+        $keys = $this->repository->index($group);
         return view('key.index', compact('keys','group'));
     }
 
@@ -52,11 +56,11 @@ class KeyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(KeyRequest $request)
+    public function store(KeyRequest $request, $group)
     {
-        $group = $request->group;
-        $this->repository->store($request->all());
-        return redirect()->route('group.key.index',$group);
+        $groups = $request->group;
+        $this->repository->store($request->all(),$group);
+        return redirect()->route('group.key.index',$groups);
     }
 
     /**
