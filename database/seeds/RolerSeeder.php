@@ -12,6 +12,8 @@ class RolerSeeder extends Seeder
      */
     public function run()
     {
-        Role::create(['name' => 'Admin', 'guard_name' => 'web']);
+        factory(Role::class)->create([
+            'name' => 'Admin'
+        ]);
     }
 }
