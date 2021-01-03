@@ -4,9 +4,12 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Traits\HasRoles;
+use function GuzzleHttp\Psr7\uri_for;
 
 class UserRepository
 {
@@ -28,7 +31,6 @@ class UserRepository
             ->Where('is_enabled', true)
             ->orderBy('created_at', 'DESC')
             ->paginate(10);
-        Log::info('Listing all user - Instance: ' . InstanceId());
     }
 
     /**
@@ -37,12 +39,15 @@ class UserRepository
      */
     public function store($request)
     {
-        $request['instance_id'] = instanceId();
-        $request['password'] = bcrypt($request['password']);
-        $user = $this->user->create($request);
-        $user->assignRole($request->input('roles'));
+        DB::transaction( function() use ($request){
+            $request['instance_id'] = instanceId();
+            $request['password'] = bcrypt($request['password']);
+            $user = $this->user->create($request);
+            $user->assignRole($request['roles']);
 
-        return $user;
+            return $user;
+        });
+
     }
 
     /**
@@ -65,15 +70,14 @@ class UserRepository
      */
     public function registerUserOwner($data)
     {
-        $instance = $this->createInstance($data['instance']);
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'instance_id' => $instance->id
-        ]);
-
-        return $user->assignRole('Admin');
+            $instance = $this->createInstance($data['instance']);
+            $user = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+                'instance_id' => $instance->id
+            ]);
+            return $user->assignRole('Admin');
     }
 
     /**
@@ -89,16 +93,4 @@ class UserRepository
         }
     }
 
-    /**
-     * @param $user
-     * @return false
-     */
-//    public function createRoleOwner($user)
-//    {
-//        $role = Role::create([
-//            'name' => 'Admin',
-//            'instance_id' => $user->instance->id
-//        ]);
-//        return $user->assignRole($role->name);
-//    }
 }

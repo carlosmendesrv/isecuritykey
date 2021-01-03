@@ -45,12 +45,14 @@ class RoleRepository
         return $response;
     }
 
-    public function store($data)
+    public function store($request)
     {
-        return $this->role->create([
-            'name' => $data['name'],
+        $role = $this->role->create([
+            'name' => $request['name'] . "-" . instanceName(),
             'instance_id' => instanceId()
         ]);
+        $role->syncPermissions($request['permission']);
+        return $role;
     }
 
     public function assignPermission($data)

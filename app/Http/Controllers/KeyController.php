@@ -25,7 +25,6 @@ class KeyController extends Controller
         $this->group = $group;
     }
 
-
     /**
      * Display a listing of the resource.
      *

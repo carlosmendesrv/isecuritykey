@@ -12,6 +12,11 @@ class CategoryController extends Controller
 
     public function __construct(CategoryRepository $repository)
     {
+        $this->middleware('permission:category-create|category-edit|category-delete', ['only' => ['index', 'store']]);
+        $this->middleware('permission:category-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:category-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:category-delete', ['only' => ['destroy']]);
+
         $this->repository = $repository;
     }
 

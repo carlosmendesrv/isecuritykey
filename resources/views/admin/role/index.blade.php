@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
     <div class="container">
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Grupos de Permissão</h1>
@@ -21,7 +20,6 @@
                         <table class="table table-hover">
                             <thead>
                             <tr>
-                                <th scope="col">Nº</th>
                                 <th scope="col">Nome</th>
                                 <th scope="col">Ação</th>
                             </tr>
@@ -29,17 +27,16 @@
                             <tbody>
                             @foreach ($roles as $key => $role)
                                 <tr>
-                                    <td>{{ ++$i }}</td>
-                                    <td>{{ $role->name }}</td>
+                                    <td>{{ explode("-",$role->name)[0] }}</td>
                                     <td>
-                                        <a class="btn btn-info" href="{{ route('role.show',$role->id) }}">Show</a>
+                                        <a class="btn btn-info" href="{{ route('role.show',$role->id) }}">Visualizar</a>
                                         @can('role-edit')
                                             <a class="btn btn-primary"
-                                               href="{{ route('role.edit',$role->id) }}">Edit</a>
+                                               href="{{ route('role.edit',$role->id) }}">Editar</a>
                                         @endcan
                                         @can('role-delete')
                                             {!! Form::open(['method' => 'DELETE','route' => ['role.destroy', $role->id],'style'=>'display:inline']) !!}
-                                            {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                                            {!! Form::submit('Excluir', ['class' => 'btn btn-danger']) !!}
                                             {!! Form::close() !!}
                                         @endcan
                                     </td>
@@ -47,5 +44,14 @@
                             @endforeach
                             </tbody>
                         </table>
-    {!! $roles->render() !!}
+                        <div class="pagination justify-content-center">
+
+                            {!! $roles->render() !!}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection

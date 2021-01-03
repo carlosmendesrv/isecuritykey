@@ -21,6 +21,7 @@ class CreateKeysTable extends Migration
             $table->string('quality')->nullable();
             $table->string('url')->nullable();
             $table->string('notes')->nullable();
+            $table->string('user_id')->nullable();
             $table->date('expires')->nullable();
             $table->boolean('is_private')->default(false);
 

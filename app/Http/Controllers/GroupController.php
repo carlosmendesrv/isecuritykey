@@ -11,6 +11,11 @@ class GroupController extends Controller
 
     public function __construct(GroupRepository $repository)
     {
+        $this->middleware('permission:group-create|group-edit|group-delete', ['only' => ['index', 'store']]);
+        $this->middleware('permission:group-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:group-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:group-delete', ['only' => ['destroy']]);
+
         $this->repository = $repository;
     }
 

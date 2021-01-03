@@ -32,7 +32,7 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="password">Senhar</label>
+                                    <label for="password">Senha</label>
                                     <input type="password" name="password" autocomplete="new-password"
                                            value="{{ old('password') }}" class="form-control"
                                            required>
@@ -40,7 +40,12 @@
 
                                 <div class="form-group row">
                                     <strong>Role:</strong>
-                                    {!! Form::select('roles[]', $roles,[], array('class' => 'form-control','multiple')) !!}
+                                    <select name="roles" class="form-control">
+                                        @foreach($roles as $role)
+                                            <option name="roles"
+                                                    value="{{$role}}"> {{ explode("-",$role)[0] }} </option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary">Salvar</button>

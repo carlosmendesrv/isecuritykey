@@ -6,7 +6,9 @@ namespace App\Repositories;
 use App\Models\Category;
 use App\Models\Key;
 use http\Env\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 
 class KeyRepository
 {
@@ -14,7 +16,11 @@ class KeyRepository
     protected $category;
     protected $group;
 
-    public function __construct(Key $key, Category $category, GroupRepository $groupRepository)
+    public function __construct(
+        Key $key,
+        Category $category,
+        GroupRepository $groupRepository
+    )
     {
         $this->key = $key;
         $this->category = $category;
@@ -26,11 +32,12 @@ class KeyRepository
      */
     public function index($group)
     {
-        return $this->key
+        $user = Auth::user()->id;
+        $query = $this->key
             ->where('group_id', $group)
-            ->where('is_private', false)
             ->orderBy('created_at', 'DESC')
             ->paginate(10);
+        return $query;
     }
 
     /**
@@ -39,10 +46,13 @@ class KeyRepository
      */
     public function store($request, $group)
     {
-        $request['instance_id'] = instanceId();
-        $request['group_id'] = $group;
-        $request = $this->encrypted($request);
-        return $this->key->create($request);
+        DB::transaction(function () use ($request, $group) {
+            $request['instance_id'] = instanceId();
+            $request['group_id'] = $group;
+            $request['user_id'] = Auth::user()->id;
+            $request = $this->encrypted($request);
+            return $this->key->create($request);
+        });
     }
 
     /**

@@ -27,13 +27,16 @@ class Key extends Model
         'expires',
         'is_private',
         'category_id',
-        'group_id'
+        'group_id',
+        'user_id'
     ];
 
     protected $casts = [
         'id' => 'string',
+        'user_id' => 'string',
         'category_id' => 'string',
         'group_id' => 'string',
+        'is_private' => 'boolean'
     ];
 
     public function group()

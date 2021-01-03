@@ -7,6 +7,7 @@ use App\Repositories\RoleRepository;
 use App\Validator\RoleValidator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -31,7 +32,12 @@ class RoleController extends Controller
         $this->validator = $validator;
         $this->repository = $repository;
         $this->rules = [
-            'name' => 'required|max:255'
+            'name' => [
+//                ['required|max:255'],
+                Rule::unique('roles')->where(function ($query){
+                    $query->where('instance_id',instanceId());
+                })
+            ]
         ];
     }
 
@@ -46,8 +52,7 @@ class RoleController extends Controller
             ->where('instance_id', InstanceId())
             ->paginate(5);
 
-        return view('admin.role.index', compact('roles'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
+        return view('admin.role.index', compact('roles'));
     }
 
     /**
@@ -69,26 +74,13 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        $a = $this->validate($request,$this->rules );
-        dd($a);
-//        $this->validate($request, [
-//            'name' => 'required|unique:roles,name,instance_id',
-//            'permission' => 'required',
-//        ]);
-        try {
+        $this->validate($request, $this->rules)
+            ? $this->repository->store($request->all()) : '';
 
-//            $this->repository->store($request->all());
-            $this->validator->createRole($request->all())
-                ? $this->repository->store($request->all()) : '';
-        } catch (\Exception $exception) {
-
-//            dd($exception->getMessage());
-
-        }
         return redirect()->route('role.index')
             ->with('success', 'Grupo de permissão criado.');
-
     }
+
 
     /**
      * Display the specified resource.
@@ -138,12 +130,12 @@ class RoleController extends Controller
         ]);
 
         $role = Role::find($id);
-        $role->name = $request->input('name');
+        $role->name = $request->input('name') . "-" . instanceName();
         $role->save();
 
         $role->syncPermissions($request->input('permission'));
 
-        return redirect()->route('admin.role.index')
+        return redirect()->route('role.index')
             ->with('success', 'Grupo de permissão atualizado.');
     }
 
@@ -156,7 +148,12 @@ class RoleController extends Controller
     public function destroy($id)
     {
         DB::table("roles")->where('id', $id)->delete();
-        return redirect()->route('admin.role.index')
+        return redirect()->route('role.index')
             ->with('success', 'Grupo de permissão deletado.');
+    }
+
+    public function rulesStore()
+    {
+        return $this->rules;
     }
 }

@@ -41,8 +41,8 @@
 
                                 <div class="form-group row">
                                     <label for="password">Confirmação de Senha</label>
-                                    <input type="password" name="password-confirmation" autocomplete="new-password"
-                                           value="{{ old('password-confirmation') }}" class="form-control"
+                                    <input type="password" name="password_confirmation" autocomplete="new-password"
+                                           value="{{ old('password_confirmation') }}" class="form-control"
                                            required>
                                 </div>
 
@@ -62,14 +62,14 @@
                                     <textarea name="notes" value="{{ old('notes') }}" class="form-control"></textarea>
                                 </div>
 
-                                <div class="form-group">
-                                    <div class="form-check">
-                                        <input  name="is_private" value="true" class="form-check-input" type="checkbox" id="gridCheck">
-                                        <label class="form-check-label" for="gridCheck">
-                                            Privado
-                                        </label>
-                                    </div>
-                                </div>
+{{--                                <div class="form-group">--}}
+{{--                                    <div class="form-check">--}}
+{{--                                        <input  name="is_private" value="1" class="form-check-input" type="checkbox" id="gridCheck">--}}
+{{--                                        <label class="form-check-label" for="gridCheck">--}}
+{{--                                            Privado--}}
+{{--                                        </label>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
 
                             </div>
                             <button type="submit" class="btn btn-primary">Cadastrar</button>

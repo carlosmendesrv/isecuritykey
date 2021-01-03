@@ -32,7 +32,7 @@ Route::group(['middleware' => ['auth']], function() {
         Route::resource('user', 'UserController');
     });
 
-    Route::resource('google2Fa', '2faController')->only('show', 'destroy');
+    Route::resource('google2Fa', 'TfaController')->only('show', 'destroy');
     Route::resource('group', 'GroupController');
     Route::resource('group.key', 'KeyController');
     Route::resource('category', 'CategoryController');

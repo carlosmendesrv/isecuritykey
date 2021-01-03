@@ -25,9 +25,9 @@ class KeyRequest extends FormRequest
     {
         return [
             'title' => 'required',
-//            'category_id' => 'required',
+            'category_id' => 'required',
             'username' => 'required',
-            'password' => 'required',
+            'password' => 'required|confirmed',
         ];
     }
 }
