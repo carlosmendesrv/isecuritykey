@@ -39,7 +39,7 @@ class UserRepository
      */
     public function store($request)
     {
-        DB::transaction( function() use ($request){
+        DB::transaction(function () use ($request) {
             $request['instance_id'] = instanceId();
             $request['password'] = bcrypt($request['password']);
             $user = $this->user->create($request);
@@ -59,9 +59,12 @@ class UserRepository
         $user = $this->user
             ->where('instance_id', instanceId())
             ->findOrFail($id);
-        $user->delete();
 
-        return $user;
+        if (!$user->hasRole('Admin')) {
+            $user->delete();
+            return redirect()->route('user.index')->with('success', 'Usuário deletado.');
+        }
+        return redirect()->route('user.index')->with('error', 'Usuário Admin.');
     }
 
     /**
@@ -70,14 +73,14 @@ class UserRepository
      */
     public function registerUserOwner($data)
     {
-            $instance = $this->createInstance($data['instance']);
-            $user = User::create([
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'password' => Hash::make($data['password']),
-                'instance_id' => $instance->id
-            ]);
-            return $user->assignRole('Admin');
+        $instance = $this->createInstance($data['instance']);
+        $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+            'instance_id' => $instance->id
+        ]);
+        return $user->assignRole('Admin');
     }
 
     /**
