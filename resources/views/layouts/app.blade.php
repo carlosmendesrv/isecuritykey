@@ -48,7 +48,7 @@
                         @endcan
                         @can('group-create')
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('group.index') }}">{{ __('Grupos') }}</a>
+                                <a class="nav-link" href="{{ route('group.index') }}">{{ __('Grupo para Senha') }}</a>
                             </li>
                         @endcan
                         @can('role-create')

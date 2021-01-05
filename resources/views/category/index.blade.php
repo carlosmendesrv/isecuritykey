@@ -29,12 +29,15 @@
                                 <td>{{$category->name}}</td>
                                 <td>{{$category->notes}}</td>
                                 <td>
+                                    <div class="btn-group">
                                     <form method="POST"
                                           action="{{ route('category.destroy', $category->id) }}">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">Excluir</button>
                                     </form>
+                                        <a class="btn btn-info" href="{{route('category.edit',$category->id)}}">Editar</a>
+                                    </div>
                                 </td>
                             </tr>
                             @endforeach
