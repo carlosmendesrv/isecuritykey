@@ -79,7 +79,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = $this->repository->edit($id);
+        $roles = $this->repository->getRolesPluck();
+        return view('admin.user.edit', compact('user','roles'));
     }
 
     /**
@@ -91,7 +93,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return $this->repository->update($request->all(),$id);
     }
 
     /**

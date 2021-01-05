@@ -29,14 +29,17 @@
                                     <td>{{$user->name}}</td>
                                     <td>{{$user->email}}</td>
                                     <td>
-                                        @if(!$user->hasRole('Admin'))
-                                            <form method="POST"
-                                                  action="{{ route('user.destroy', $user->id) }}">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger">Excluir</button>
-                                            </form>
-                                        @endif
+                                        <div class="btn-group">
+                                            @if(!$user->hasRole('Admin'))
+                                                <form method="POST"
+                                                      action="{{ route('user.destroy', $user->id) }}">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger">Excluir</button>
+                                                </form>
+                                            @endif
+                                            <a class="btn btn-info" href="{{route('user.edit', $user->id)}}">Editar</a>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach

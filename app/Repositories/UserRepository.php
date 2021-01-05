@@ -28,6 +28,7 @@ class UserRepository
     {
         return $this->user
             ->where('instance_id', instanceId())
+            ->with('roles')
             ->Where('is_enabled', true)
             ->orderBy('created_at', 'DESC')
             ->paginate(10);
@@ -48,6 +49,29 @@ class UserRepository
             return $user;
         });
 
+    }
+
+    public function edit($id)
+    {
+        $user = $this->user->findOrFail($id);
+        return $user;
+    }
+
+    public function update($request, $id)
+    {
+        try {
+            $user = $this->user->findOrFail($id);
+
+            if (is_null($request['password'])) {
+                unset($request['password']);
+            } else {
+                $request['password'] = bcrypt($request['password']);
+            }
+            $user->update($request);
+            return redirect()->route('user.index')->with('success', 'Usuário atualizado com sucesso.');
+        } catch (\Exception $exception) {
+            return redirect()->route('user.index')->with('error', 'Ops! Caso o erro persista, contate o administrador do sistema.');
+        }
     }
 
     /**
@@ -94,6 +118,16 @@ class UserRepository
         } catch (\Exception $exception) {
             return false;
         }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRolesPluck()
+    {
+        return Role::where('name', '<>', 'Admin')
+            ->pluck('name', 'name')
+            ->all();
     }
 
 }
