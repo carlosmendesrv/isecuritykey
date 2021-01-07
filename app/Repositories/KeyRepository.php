@@ -36,7 +36,7 @@ class KeyRepository
         $query = $this->key
             ->where('group_id', $group)
             ->orderBy('created_at', 'DESC')
-            ->paginate(10);
+            ->paginate(8);
         return $query;
     }
 

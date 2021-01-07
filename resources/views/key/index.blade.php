@@ -10,7 +10,7 @@
         </div>
 
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-10">
                 <div class="card">
                     <div class="card-header">{{ __('Lista de Senhas') }}</div>
                     <div class="card-body">
@@ -21,7 +21,6 @@
                                 <th scope="col">Descrição</th>
                                 <th scope="col">Categoria</th>
                                 <th scope="col">Status</th>
-                                <th scope="col">Data</th>
                                 <th scope="col">Ação</th>
                             </tr>
                             </thead>
@@ -31,7 +30,6 @@
                                 <td>{{$key->title}}</td>
                                 <td>{{$key->category->name}}</td>
                                 <td>{{ $key->is_private ? 'Privada':'Publica' }}</td>
-                                <td>{{ date_format( $key->created_at, 'd/m/Y') }}</td>
                                 <td>
                                     <div class="btn-group">
                                     <a href="{{route('group.key.show',[$group,$key->id])}}"
@@ -50,6 +48,9 @@
                             </tbody>
                             @endforeach
                         </table>
+                    </div>
+                    <div class="pagination justify-content-center">
+                        {{ $keys->links() }}
                     </div>
                 </div>
             </div>

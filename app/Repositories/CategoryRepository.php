@@ -22,7 +22,7 @@ class CategoryRepository
         return $this->category
             ->where('instance_id', instanceId())
             ->orderBy('created_at', 'DESC')
-            ->paginate(10);
+            ->paginate(8);
     }
 
     /**
