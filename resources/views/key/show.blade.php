@@ -39,7 +39,7 @@
 
                                     <tr>
                                         <th scope="row">Categoria</th>
-                                        <td>{{$key->category_id}}</td>
+                                        <td>{{$key->category->name}}</td>
                                     </tr>
 
                                     <tr>

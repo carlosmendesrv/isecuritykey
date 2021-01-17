@@ -17,13 +17,13 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/dashboard', 'DashBoardController@index')->name('dashboard');
 
 Route::group(['middleware' => ['auth']], function() {
 

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.panel')
 
 
 @section('content')
@@ -9,7 +9,6 @@
                 <i class="fas fa-plus fa-sm text-white-50"></i> Voltar
             </a>
         </div>
-
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">

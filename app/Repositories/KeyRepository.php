@@ -6,7 +6,9 @@ namespace App\Repositories;
 use App\Models\Category;
 use App\Models\Key;
 use http\Env\Request;
+use Illuminate\Encryption\Encrypter;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 
@@ -66,7 +68,9 @@ class KeyRepository
 
     public function show($id)
     {
-        $data = $this->key->findOrFail($id);
+        $data = $this->key
+            ->with('category')
+            ->findOrFail($id);
         return $this->decrypted($data);
     }
 

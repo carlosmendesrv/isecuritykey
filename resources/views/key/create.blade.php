@@ -62,15 +62,14 @@
                                     <textarea name="notes" value="{{ old('notes') }}" class="form-control"></textarea>
                                 </div>
 
-{{--                                <div class="form-group">--}}
-{{--                                    <div class="form-check">--}}
-{{--                                        <input  name="is_private" value="1" class="form-check-input" type="checkbox" id="gridCheck">--}}
-{{--                                        <label class="form-check-label" for="gridCheck">--}}
-{{--                                            Privado--}}
-{{--                                        </label>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <input  name="is_private" value="1" class="form-check-input" type="checkbox" id="gridCheck">
+                                        <label class="form-check-label" for="gridCheck">
+                                            Privado
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                             <button type="submit" class="btn btn-primary">Cadastrar</button>
                         </form>

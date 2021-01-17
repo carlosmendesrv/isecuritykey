@@ -1,15 +1,21 @@
-@extends('layouts.app')
-
+@extends('layouts.panel')
 
 @section('content')
     <div class="container">
-        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Grupos de Permissão</h1>
-            @can('role-edit')
-                <a href="{{ route('role.index') }}" class="d-none d-sm-inline-block btn btn btn-primary shadow-sm">
-                    <i class="fas fa-plus fa-sm text-white-50"></i> Voltar
-                </a>
-            @endcan
+        <div class="page-title-box d-flex align-items-center justify-content-between">
+            <h4 class="mb-0 font-size-18">Grupos de Permissão</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a
+                            href="javascript: void(0);">{{env('APP_NAME')}}</a></li>
+                    <li class="breadcrumb-item active">Grupos de Permissão</li>
+                </ol>
+            </div>
+        </div>
+        <div class="text-right">
+            <a href="{{ route('role.index') }}" class="d-none d-sm-inline-block btn btn btn-primary shadow-sm">
+                <i class="fas fa-arrow-left fa-sm text-white-50"></i> Voltar
+            </a>
         </div>
         <div class="row justify-content-center">
             <div class="col-md-8">

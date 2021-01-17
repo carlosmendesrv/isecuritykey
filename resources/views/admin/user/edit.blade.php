@@ -1,14 +1,14 @@
-@extends('layouts.app')
+@extends('layouts.panel')
 
 @section('content')
     <div class="container">
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Usuários</h1>
-            <a href="{{ route('user.create') }}" class="d-none d-sm-inline-block btn btn btn-primary shadow-sm">
+            <a href="{{ route('user.create') }}"
+               class="d-none d-sm-inline-block btn btn btn-primary shadow-sm">
                 <i class="fas fa-plus fa-sm text-white-50"></i> Novo Usuário
             </a>
         </div>
-
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card">
@@ -36,14 +36,15 @@
                                     <label for="password">Senha</label>
                                     <input type="password" name="password" autocomplete="new-password"
                                            value="{{ old('password') }}" class="form-control"
-                                           >
+                                    >
                                 </div>
 
                                 <div class="form-group row">
                                     <strong>Role:</strong>
                                     <select name="roles" class="form-control">
                                         @foreach($roles as $role)
-                                            <option name="roles" value="{{$role}}"> {{ explode("-",$role)[0] }} </option>
+                                            <option name="roles"
+                                                    value="{{$role}}"> {{ explode("-",$role)[0] }} </option>
                                         @endforeach
                                     </select>
                                 </div>

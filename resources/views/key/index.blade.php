@@ -1,11 +1,10 @@
-@extends('layouts.app')
+@extends('layouts.panel')
 
 @section('styles')
     <link href="{{ asset('//cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
-
     <div class="container">
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Senhas</h1>
@@ -14,7 +13,6 @@
                 <i class="fas fa-plus fa-sm text-white-50"></i> Nova Senha
             </a>
         </div>
-
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <div class="card">
